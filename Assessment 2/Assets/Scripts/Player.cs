@@ -8,6 +8,13 @@ public class Player : MonoBehaviour
     public float movementSpeed;
     public GameObject camera;
 
+    public GameObject playerObj;
+
+    public GameObject projectileSpawnPoint;
+    public float waitTime;
+    public GameObject projectile;
+
+
     // Methods
     void Update()
     {
@@ -23,12 +30,32 @@ public class Player : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
             targetRotation.x = 0;
             targetRotation.z = 0;
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 7f * Time.deltaTime);
+            playerObj.transform.rotation = Quaternion.Slerp(playerObj.transform.rotation, targetRotation, 7f * Time.deltaTime);
         }
 
         //Player Movement
         if (Input.GetKey(KeyCode.W))
             transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.A))
+            transform.Translate(Vector3.left * movementSpeed * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.S))
+            transform.Translate(Vector3.back * movementSpeed * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.D))
+            transform.Translate(Vector3.right * movementSpeed * Time.deltaTime);
+
+
+        //Shooting
+        if (Input.GetMouseButtonDown(0))
+        {
+            Shoot();
+        }
+    }
+    void Shoot()
+    {
+        Instantiate(projectile.transform, projectileSpawnPoint.transform.position, Quaternion.identity);
     }
 
 }
