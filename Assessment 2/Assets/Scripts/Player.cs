@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     public float waitTime;
     public GameObject projectile;
 
+    private Transform projectileSpawned;
+
+    public float points;
 
     // Methods
     void Update()
@@ -55,7 +58,8 @@ public class Player : MonoBehaviour
     }
     void Shoot()
     {
-        Instantiate(projectile.transform, projectileSpawnPoint.transform.position, Quaternion.identity);
+        projectileSpawned = Instantiate(projectile.transform, projectileSpawnPoint.transform.position, Quaternion.identity);
+        projectileSpawned.rotation = projectileSpawnPoint.transform.rotation;
     }
 
 }
