@@ -11,8 +11,15 @@ public class Projectile : MonoBehaviour
     private GameObject triggeringEnemy;
     public float damage;
 
-	//Methods
-	void Update () 
+    private GameObject player;
+
+    //Methods
+    void Start()
+    {
+        player = GameObject.FindWithTag("Player");
+    }
+
+    void Update () 
     {
         transform.Translate(Vector3.forward * Time.deltaTime * speed);
         maxDistance += 1 * Time.deltaTime;
@@ -29,6 +36,11 @@ public class Projectile : MonoBehaviour
             triggeringEnemy = other.gameObject;
             triggeringEnemy.GetComponent<Enemy>().health -= damage;
             Destroy(this.gameObject);
+        }
+
+        if(other.tag == "Player")
+        {
+            player.GetComponent<Player>().health -= 20;
         }
     }
 }
