@@ -7,13 +7,16 @@ public class Enemy : MonoBehaviour
     //Variables
     public float health;
     public float pointsToGive;
+    public float speed;
+    public float stoppingDistance;
 
     public GameObject player;
     public GameObject projectile;
     public Transform projectileSpawnPoint;
+
     private Transform projectileSpawned;
     private Transform cameraHolder;
-
+    private Transform target;
 
     public float waitTime;
     private float currentTime;
@@ -30,7 +33,9 @@ public class Enemy : MonoBehaviour
 
     public void Update()
     {
-        if(!projectileSpawnPoint)
+        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+
+        if (!projectileSpawnPoint)
         {
             cameraHolder = this.transform.GetChild(0);
             projectileSpawnPoint = cameraHolder.GetChild(2);
@@ -66,5 +71,13 @@ public class Enemy : MonoBehaviour
 
         projectileSpawned = Instantiate(projectile.transform, projectileSpawnPoint.transform.position, Quaternion.identity);
         projectileSpawned.rotation = this.transform.rotation;
+    }
+
+    public void Follow()
+    {
+        if (Vector3.Distance(transform.position, target.position) > stoppingDistance)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+        }
     }
 }
