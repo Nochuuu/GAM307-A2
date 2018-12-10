@@ -14,14 +14,19 @@ public class Enemy : MonoBehaviour
     private Transform projectileSpawned;
     private Transform cameraHolder;
 
-
+    public float chaseDistance = 15;
+    public float distToPlayer;
     public float waitTime;
     private float currentTime;
     private bool shot;
+    public bool tracking;
+
+    Patrol patrol;
 
     //Methods
     public void Start()
     {
+        patrol = GetComponent<Patrol>();
         player = GameObject.FindWithTag("Player");
 
         cameraHolder = this.transform.GetChild(0);
@@ -30,6 +35,18 @@ public class Enemy : MonoBehaviour
 
     public void Update()
     {
+        distToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        if(distToPlayer < chaseDistance)
+        {
+            tracking = true;
+            patrol.patrolState = Patrol.PatrolState.CHASE;
+        }
+        else
+        {
+            tracking = false;
+            patrol.patrolState = Patrol.PatrolState.PATROL;
+        }
+       
         if(!projectileSpawnPoint)
         {
             cameraHolder = this.transform.GetChild(0);
@@ -41,6 +58,8 @@ public class Enemy : MonoBehaviour
             Die();
         }
 
+
+        if(tracking)
         this.transform.LookAt(player.transform);
 
         if (currentTime == 0)

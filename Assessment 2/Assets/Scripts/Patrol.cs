@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class Patrol : MonoBehaviour
 {
+    public enum PatrolState { PATROL, CHASE};
+
     //Dictates whether the agent waits on each node.
     [SerializeField]
     bool _patrolWaiting;
@@ -28,9 +30,13 @@ public class Patrol : MonoBehaviour
     bool _waiting;
     bool _patrolForward;
     float _waitTimer;
+    public PatrolState patrolState;
+    public GameObject player;
 
     public void Start()
     {
+        patrolState = PatrolState.PATROL;
+
         _navMeshAgent = this.GetComponent<NavMeshAgent>();
 
         if (_navMeshAgent == null)
@@ -54,33 +60,50 @@ public class Patrol : MonoBehaviour
 
     public void Update()
     {
-        //Check if we're close to the destination
-        if (_travelling && _navMeshAgent.remainingDistance <= 1.0f)
+        if (patrolState == PatrolState.PATROL)
         {
-            _travelling = false;
+            if (_travelling && _navMeshAgent.remainingDistance <= 1.0f)
+            {
+                _travelling = false;
 
-            if (_patrolWaiting)
-            {
-                _waiting = true;
-                _waitTimer = 0f;
+                if (_patrolWaiting)
+                {
+                    _waiting = true;
+                    _waitTimer = 0f;
+                }
+                else
+                {
+                    ChangePatrolPoint();
+                    SetDestination();
+                }
             }
-            else
+
+            if (_waiting)
             {
-                ChangePatrolPoint();
-                SetDestination();
+                _waitTimer += Time.deltaTime;
+                if (_waitTimer >= _totalWaitTime)
+                {
+                    _waiting = false;
+
+                    ChangePatrolPoint();
+                    SetDestination();
+                }
             }
+
         }
-
-        if(_waiting)
+        else
         {
-            _waitTimer += Time.deltaTime;
-            if (_waitTimer >= _totalWaitTime)
-            {
-                _waiting = false;
-
-                ChangePatrolPoint();
-                SetDestination();
-            }
+            SetPlayerDestination();
+        }
+        //Check if we're close to the destination
+        
+    }
+    private void SetPlayerDestination()
+    {
+        {
+            Vector3 targetVector = player.transform.position;
+            _navMeshAgent.SetDestination(targetVector);
+            _travelling = true;
         }
     }
 
