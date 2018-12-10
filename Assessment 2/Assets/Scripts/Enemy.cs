@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
@@ -12,10 +11,9 @@ public class Enemy : MonoBehaviour
     public GameObject player;
     public GameObject projectile;
     public Transform projectileSpawnPoint;
-
     private Transform projectileSpawned;
     private Transform cameraHolder;
-    private Transform target;
+
 
     public float waitTime;
     private float currentTime;
@@ -32,9 +30,7 @@ public class Enemy : MonoBehaviour
 
     public void Update()
     {
-        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-
-        if (!projectileSpawnPoint)
+        if(!projectileSpawnPoint)
         {
             cameraHolder = this.transform.GetChild(0);
             projectileSpawnPoint = cameraHolder.GetChild(2);
@@ -71,6 +67,4 @@ public class Enemy : MonoBehaviour
         projectileSpawned = Instantiate(projectile.transform, projectileSpawnPoint.transform.position, Quaternion.identity);
         projectileSpawned.rotation = this.transform.rotation;
     }
-
-
 }
