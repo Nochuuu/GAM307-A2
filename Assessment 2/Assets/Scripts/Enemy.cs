@@ -58,18 +58,19 @@ public class Enemy : MonoBehaviour
             Die();
         }
 
-
         if(tracking)
-        this.transform.LookAt(player.transform);
+        {
+            this.transform.LookAt(player.transform);
 
-        if (currentTime == 0)
-            //Shoot();
+            if (currentTime == 0)
+                Shoot();
 
-        if (shot && currentTime < waitTime)
-            currentTime += 1 * Time.deltaTime;
+            if (shot && currentTime < waitTime)
+                currentTime += 1 * Time.deltaTime;
 
-        if (currentTime >= waitTime)
-            currentTime = 0;
+            if (currentTime >= waitTime)
+                currentTime = 0;
+        }
     }
 
     public void Die()
@@ -78,7 +79,7 @@ public class Enemy : MonoBehaviour
 
         player.GetComponent<Player>().points += pointsToGive;
     }
-    /*
+    
     public void Shoot()
     {
         shot = true;
@@ -86,5 +87,5 @@ public class Enemy : MonoBehaviour
         projectileSpawned = Instantiate(projectile.transform, projectileSpawnPoint.transform.position, Quaternion.identity);
         projectileSpawned.rotation = this.transform.rotation;
     }
-    */
+    
 }

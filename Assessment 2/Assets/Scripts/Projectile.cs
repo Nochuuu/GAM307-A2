@@ -40,7 +40,7 @@ public class Projectile : MonoBehaviour
 
         if(other.tag == "Player")
         {
-            player.GetComponent<Player>().health -= 20;
+            player.GetComponent<Player>().fame -= 20;
         }
     }
 }

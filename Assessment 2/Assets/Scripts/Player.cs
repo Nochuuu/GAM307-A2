@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -18,13 +20,19 @@ public class Player : MonoBehaviour
 
     public float points;
 
-    public float maxHealth;
-    public float health;
+    public float maxFame;
+    public float fame;
+
+    [Header("UI Elements")]
+    public TextMeshProUGUI fameUI;
+    public Image fameBar;
+
+    public float healthBarSections;
 
     // Methods
     void Start()
     {
-        health = maxHealth;
+        fame = maxFame;
     }
 
     void Update()
@@ -69,8 +77,8 @@ public class Player : MonoBehaviour
         }
 
         //Player death
-        if (health <= 0)
-            Die();
+        if (fame <= 0)
+            Busted();
     }
 
 
@@ -82,8 +90,8 @@ public class Player : MonoBehaviour
     #endregion  
 
 
-    public void Die()
+    public void Busted()
     {
-        print("You've Died!!!");
+        print("You've been busted!!!");
     }
 }

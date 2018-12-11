@@ -100,11 +100,9 @@ public class Patrol : MonoBehaviour
     }
     private void SetPlayerDestination()
     {
-        {
             Vector3 targetVector = player.transform.position;
             _navMeshAgent.SetDestination(targetVector);
             _travelling = true;
-        }
     }
 
     private void SetDestination()
